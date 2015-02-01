@@ -2,6 +2,7 @@ package com.premnirmal.Magnet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.Looper;
@@ -197,9 +198,22 @@ public class Magnet implements View.OnTouchListener {
                 isBeingDragged = false;
                 eaten = false;
                 goToWall();
+                
+                // swipe left and right action
+                // previous app and next app
+                if (Math.abs(x - mWidth) > mIconView.getWidth() / 2) {
+	                if (x > mWidth) {
+	            		mIconView.setBackgroundColor(Color.RED);
+	            	} else {
+	            		mIconView.setBackgroundColor(Color.GREEN);
+	            	}
+                } else {
+                	mIconView.setBackgroundColor(Color.TRANSPARENT);
+                }
+                
             } else if (action == MotionEvent.ACTION_MOVE) {
                 if (isBeingDragged) {
-                    move(x - lastXPose, y - lastYPose);
+                	move(x - lastXPose, y - lastYPose);
                 }
             }
 
