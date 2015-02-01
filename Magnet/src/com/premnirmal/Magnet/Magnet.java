@@ -1,5 +1,6 @@
 package com.premnirmal.Magnet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Handler;
@@ -168,7 +169,7 @@ public class Magnet implements View.OnTouchListener {
         mHeight = (metrics.heightPixels - mIconView.getHeight()) / 2;
     }
 
-    @Override
+    @SuppressLint("ClickableViewAccessibility") @Override
     public boolean onTouch(View view, MotionEvent event) {
         boolean eaten = false;
         if (shouldFlingAway) {
@@ -231,16 +232,22 @@ public class Magnet implements View.OnTouchListener {
             mRemoveView.hide();
         }
     }
-
+    /**
+     * Snap to screen edges.
+     * <strong>MODIFY</strong>: make it snap to screen middle line
+     * */
     private void goToWall() {
         if (shouldStickToWall) {
-            float nearestXWall = mLayoutParams.x >= 0 ? mWidth : -mWidth;
+            /*
+        	float nearestXWall = mLayoutParams.x >= 0 ? mWidth : -mWidth;
             float nearestYWall = mLayoutParams.y > 0 ? mHeight : -mHeight;
             if (Math.abs(mLayoutParams.x - nearestXWall) < Math.abs(mLayoutParams.y - nearestYWall)) {
                 mAnimator.start(nearestXWall, mLayoutParams.y);
             } else {
                 mAnimator.start(mLayoutParams.x, nearestYWall);
             }
+            */
+        	mAnimator.start(0, mLayoutParams.y);
         }
     }
 
