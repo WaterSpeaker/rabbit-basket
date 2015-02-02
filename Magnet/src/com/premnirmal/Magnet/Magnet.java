@@ -1,7 +1,13 @@
 package com.premnirmal.Magnet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Handler;
@@ -37,7 +43,16 @@ public class Magnet implements View.OnTouchListener {
     private boolean isBeingDragged = false;
     private int mWidth, mHeight;
 
-
+    private ActivityManager mActivityManager;
+    private PackageManager pm;
+    private String appList[] = {
+    	"com.dropbox.android",
+    	"com.facebook.katana",
+    	"com.google.android.talk",
+    	"com.android.chrome"
+    };
+    private int appPointer = 0;
+    
     public static class Builder {
 
         Magnet magnet;
@@ -143,6 +158,9 @@ public class Magnet implements View.OnTouchListener {
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mAnimator = new MoveAnimator();
         mRemoveView = new RemoveView(context);
+        
+        mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        pm = (PackageManager) context.getPackageManager();
     }
 
     public void show() {
@@ -202,11 +220,46 @@ public class Magnet implements View.OnTouchListener {
                 // swipe left and right action
                 // previous app and next app
                 if (Math.abs(x - mWidth) > mIconView.getWidth() / 2) {
+					/*
+                	List<ActivityManager.RunningAppProcessInfo> appProcessList = mActivityManager
+							.getRunningAppProcesses();
+					
+					int processNumber = appProcessList.size();
+					List<String> pkgList = new ArrayList<String>();
+					
+					for (int i = 0; i < processNumber; i++) {
+						String pkgs[] = appProcessList.get(i).pkgList;
+						for(int j = 0; j < pkgs.length; j++) {
+							if(!pkgList.contains(pkgs[j])){
+								pkgList.add(pkgs[j]);
+							}
+						}
+					}
+					String previousPkg = pkgList.get(1);
+					String nextPkg = pkgList.get(pkgList.size()-1);
+					*/
+					String pkg;
+					
 	                if (x > mWidth) {
 	            		mIconView.setBackgroundColor(Color.RED);
+	            		// next app
+	            		if (appPointer < 3) {
+	            			appPointer++;
+	            		} else {
+	            			appPointer = 0;
+	            		}
 	            	} else {
 	            		mIconView.setBackgroundColor(Color.GREEN);
+	            		// previous app
+	            		if (appPointer > 0) {
+	            			appPointer--;
+	            		} else {
+	            			appPointer = 3;
+	            		}
 	            	}
+	                pkg = appList[appPointer];
+	                Intent intent = pm.getLaunchIntentForPackage(pkg);
+	                mContext.startActivity(intent);
                 } else {
                 	mIconView.setBackgroundColor(Color.TRANSPARENT);
                 }
@@ -261,7 +314,7 @@ public class Magnet implements View.OnTouchListener {
                 mAnimator.start(mLayoutParams.x, nearestYWall);
             }
             */
-        	mAnimator.start(0, mLayoutParams.y);
+        	mAnimator.start(0, 0);
         }
     }
 
