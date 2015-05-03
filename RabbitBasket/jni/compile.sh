@@ -1,0 +1,1 @@
+/home/sign/apps/android-ndk/ndk-build
