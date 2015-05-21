@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageView
+        android:id="@+id/fastAppIcon1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/fastAppIcon2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="80dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+    
+    <ImageView
+        android:id="@+id/fastAppIcon3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="120dp"
+        android:layout_marginLeft="120dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+    
+    <ImageView
+        android:id="@+id/fastAppIcon4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="160dp"
+        android:layout_marginLeft="160dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/fastAppIcon5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="200dp"
+        android:layout_marginLeft="200dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+    
+</RelativeLayout>

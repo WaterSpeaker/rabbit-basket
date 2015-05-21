@@ -2,7 +2,6 @@ package cc.wangchen.applog;
 
 import java.util.List;
 
-import edu.umass.cs.sensors.falcon.model.APPM;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -28,8 +27,6 @@ public class AppLogService extends Service {
 	private ServiceHandler mServiceHandler;
 	private static final String TAG = "AppLog";
 	private ActivityManager mActivityManager;
-	private APPM appm;
-	
 
 	// Handler that receives messages from the thread
 	private final class ServiceHandler extends Handler {
@@ -40,8 +37,7 @@ public class AppLogService extends Service {
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO read current running application and write to database
-			int i = 0;
-			while (i++<100) {
+			while (true) {
 				synchronized (this) {
 					try {
 						wait(1000);
@@ -59,9 +55,6 @@ public class AppLogService extends Service {
 					}
 				}
 			}
-			// Stop the service using the startId, so that we don't stop
-			// the service in the middle of handling another job
-			stopSelf(msg.arg1);
 		}
 	}
 
@@ -79,12 +72,6 @@ public class AppLogService extends Service {
 		mServiceLooper = thread.getLooper();
 		mServiceHandler = new ServiceHandler(mServiceLooper);
 		mActivityManager = (ActivityManager) this.getSystemService(Activity.ACTIVITY_SERVICE);
-		
-		int TOPK=5;
-		int TIME_BINS=1;
-		int N_FIRST_CTX = 0;
-		int N_SECOND_CTX= 0;
-		appm = new APPM(TOPK,N_FIRST_CTX,N_SECOND_CTX,TIME_BINS);
 	}
 
 	@Override
