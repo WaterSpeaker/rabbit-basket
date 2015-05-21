@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/AbsoluteLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/slowAppIcon3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_x="160dp"
+        android:layout_y="280dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/fastAppIcon1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_x="100dp"
+        android:layout_y="440dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/fastAppIcon2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_x="160dp"
+        android:layout_y="380dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/fastAppIcon3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_x="220dp"
+        android:layout_y="320dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/slowAppIcon2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_x="100dp"
+        android:layout_y="340dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/slowAppIcon1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_x="40dp"
+        android:layout_y="400dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+</AbsoluteLayout>
