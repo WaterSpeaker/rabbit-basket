@@ -2,6 +2,7 @@ package cc.wangchen.rabbitbasket;
 
 import cc.wangchen.rabbitbasket.R.color;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
@@ -96,7 +97,8 @@ public class TaskScreen {
 	}
 	
 	public void realTask() {
-		trailText.setTextColor(color.red);
+		trailText.setTextColor(Color.RED);
+		trailText.setText("Real Task");
 	}
 	
 	public long getStartTime() {

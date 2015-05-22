@@ -24,14 +24,6 @@
         android:textColor="@color/black" />
 
     <Button
-        android:id="@+id/buttonExit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="Exit" />
-
-    <Button
         android:id="@+id/buttonGo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,5 +53,13 @@
         android:text="Open the following application"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Exit" />
 
 </RelativeLayout>
