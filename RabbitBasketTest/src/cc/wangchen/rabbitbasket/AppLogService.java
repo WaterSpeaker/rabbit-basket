@@ -10,6 +10,8 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -126,6 +128,19 @@ public class AppLogService extends Service {
 		result = "";
 		// Get current running app
 		currentPackage = getCurrentApp();
+		
+		// Foreground service
+		
+		Notification note = new Notification(R.drawable.ic_launcher,
+				"The rabbit is in my basket...", System.currentTimeMillis());
+		Intent i = new Intent(this, MainActivity.class);
+		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+		note.setLatestEventInfo(this, "Rabbit Basket",
+				"The rabbit is in my basket...", pi);
+		note.flags |= Notification.FLAG_NO_CLEAR;
+		startForeground(1337, note);
 	}
 
 	@Override
@@ -184,11 +199,6 @@ public class AppLogService extends Service {
 		// Task id
 		String row = taskCount + ",";
 		
-		// Fast app
-		row += AppList.FAST_APP_LIST[taskCount][0] + ",";
-		row += AppList.FAST_APP_LIST[taskCount][1] + ",";
-		row += AppList.FAST_APP_LIST[taskCount][2] + ",";
-		
 		// Task app
 		row += getTaskApp() + ",";
 		
@@ -200,6 +210,11 @@ public class AppLogService extends Service {
 		
 		// End time
 		row += System.currentTimeMillis() + ",";
+
+		// Fast app
+		row += AppList.FAST_APP_LIST[taskCount][0] + ",";
+		row += AppList.FAST_APP_LIST[taskCount][1] + ",";
+		row += AppList.FAST_APP_LIST[taskCount][2] + ",";
 		
 		// If through launcher
 		row += icon.isThroughLauncher() + "\n";
