@@ -1,19 +1,29 @@
 package cc.wangchen.rabbitbasket;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
+import android.provider.MediaStore.Files;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 /**
@@ -23,17 +33,21 @@ import android.widget.Toast;
  */
 
 public class AppLogService extends Service {
+	// Service
 	private Looper mServiceLooper;
 	private ServiceHandler mServiceHandler;
-	private static final String TAG = "AppLog";
+	// System resource
 	private ActivityManager mActivityManager;
+	// Views
 	private OverlayIcon icon;
-
+	private TaskScreen task;
+	// Task data
 	private int taskCount;
 	private String currentPackage;
 	private String lastPackage;
-	private long startTime;
-	private long endTime;
+	private String result;
+	// Constants and Flags
+	private static final String TAG = "AppLog";
 
 	// Handler that receives messages from the thread
 	private final class ServiceHandler extends Handler {
@@ -47,7 +61,7 @@ public class AppLogService extends Service {
 			while (true) {
 				synchronized (this) {
 					try {
-						wait(1000); // detect every 0.01 second
+						wait(10); // detect every 0.01 second
 
 						lastPackage = currentPackage;
 						currentPackage = getCurrentApp();
@@ -62,7 +76,10 @@ public class AppLogService extends Service {
 						}
 
 						if (taskCount >= AppList.TASK_APP_NUMBER) {
-							// If all task done, exit.
+							// If all task done
+							// Save data
+							writeToFile(result, "rabbit-basket-result.txt");
+							// Exit
 							android.os.Process.killProcess(android.os.Process
 									.myPid());
 							System.exit(1);
@@ -83,6 +100,11 @@ public class AppLogService extends Service {
 		HandlerThread thread = new HandlerThread("ServiceStartArguments",
 				Process.THREAD_PRIORITY_BACKGROUND);
 		thread.start();
+		
+		Share.context = this;
+		Share.wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+		Share.inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		Share.pm = getPackageManager();
 
 		// Get the HandlerThread's Looper and use it for our Handler
 		mServiceLooper = thread.getLooper();
@@ -90,17 +112,18 @@ public class AppLogService extends Service {
 		mActivityManager = (ActivityManager) this.getSystemService(Activity.ACTIVITY_SERVICE);
 		
 		// Create UI
-		icon = new OverlayIcon(this);
+		icon = new OverlayIcon();
 		icon.init();
 		icon.setSlowApp(AppList.SLOW_APP_LIST);
+		// Create task notification UI
+		task = new TaskScreen();
+		task.init();
 		
 		// Initial task
 		taskCount = 0;
 		icon.setFastApp(AppList.FAST_APP_LIST[taskCount]);
-		icon.setTaskApp(AppList.TASK_APP_LIST[taskCount][1], AppList.TASK_APP_LIST[taskCount][0]);
-		icon.showTask();
-		startTime = System.currentTimeMillis();
-		
+		task.setTask(AppList.TASK_APP_LIST[taskCount][1], AppList.TASK_APP_LIST[taskCount][0]);
+		result = "";
 		// Get current running app
 		currentPackage = getCurrentApp();
 	}
@@ -148,44 +171,53 @@ public class AppLogService extends Service {
 	
 	private void nextTask() {
 		taskCount++;
-		startTime = System.currentTimeMillis();
 		icon.setFastApp(AppList.FAST_APP_LIST[taskCount]);
-		icon.setTaskApp(AppList.TASK_APP_LIST[taskCount][1], AppList.TASK_APP_LIST[taskCount][0]);
-		icon.showTask();
-		Log.v(TAG, "Next task");
+		task.setTask(AppList.TASK_APP_LIST[taskCount][1], AppList.TASK_APP_LIST[taskCount][0]);
+		
+		if(taskCount == AppList.TRAIL_TASK_APP_NUMBER) {
+			task.realTask();
+		}
 	}
 	
 	private void record() {
 
 		// Task id
-		String row = taskCount + ", ";
+		String row = taskCount + ",";
 		
 		// Fast app
-		row += AppList.FAST_APP_LIST[taskCount][0] + " ";
-		row += AppList.FAST_APP_LIST[taskCount][1] + " ";
-		row += AppList.FAST_APP_LIST[taskCount][2] + " ";
-		row += ", ";
+		row += AppList.FAST_APP_LIST[taskCount][0] + ",";
+		row += AppList.FAST_APP_LIST[taskCount][1] + ",";
+		row += AppList.FAST_APP_LIST[taskCount][2] + ",";
 		
 		// Task app
-		row += getTaskApp();
-		row += ", ";
+		row += getTaskApp() + ",";
 		
 		// Result app
-		row += currentPackage;
-		row += ", ";
+		row += currentPackage + ",";
 		
 		// Start time
-		row += startTime;
-		row += ", ";
+		row += task.getStartTime() + ",";
 		
 		// End time
-		row += System.currentTimeMillis();
-		row += ", ";
+		row += System.currentTimeMillis() + ",";
 		
 		// If through launcher
-		row += icon.isThroughLauncher();
-		row += "\n";
+		row += icon.isThroughLauncher() + "\n";
 		
 		Log.v(TAG, row);
+		result += row;
+	}
+	
+	private void writeToFile(String data, String filename) {
+		File file = new File(Environment.getExternalStorageDirectory(), filename);
+		if (file.exists ()) file.delete (); 
+	    try {
+	           FileOutputStream out = new FileOutputStream(file);
+	           out.write(data.getBytes());
+	           out.flush();
+	           out.close();
+	    } catch (Exception e) {
+	    	Log.e("Exception", "File write failed: " + e.toString());
+	    }
 	}
 }

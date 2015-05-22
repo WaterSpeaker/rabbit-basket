@@ -1,56 +1,39 @@
 package cc.wangchen.rabbitbasket;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.Resources;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class OverlayIcon {
-	private Context context;
+	// Views
 	private View view;
 	private View appview;
-	private View taskview;
-	private WindowManager wm;
-	private LayoutInflater inflater;
 	private WindowManager.LayoutParams params;
 	private WindowManager.LayoutParams params2;
-	private PackageManager pm;
 	private ImageView[] slowAppIcons;
 	private ImageView[] fastAppIcons;
-	private ImageView taskAppIcon;
-	private TextView taskAppName;
 	private String[] fastApps;
 	private String[] slowApps;
-	private static final String TAG = "AppIcon";
+	private ImageView homeScreenIcon;
 	
 	private boolean isThroughLauncher = false;
 
-	public OverlayIcon(Context context) {
-		this.context = context;
+	public OverlayIcon() {
+		
 	}
 
 	public void init() {
-		// Get system services
-		wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-	    inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    pm = context.getPackageManager();
-	    
 		// Set layout parameters
 		params = new WindowManager.LayoutParams(
 				150,
@@ -72,19 +55,16 @@ public class OverlayIcon {
 	    params.y=0;
 
 		// Initialize view
-		appview = inflater.inflate(R.layout.app_list, null);
-		view = inflater.inflate(R.layout.overlay_icon, null);
-		taskview = inflater.inflate(R.layout.task, null);
+		appview = Share.inflater.inflate(R.layout.app_list, null);
+		view = Share.inflater.inflate(R.layout.overlay_icon, null);
 
 		// Add layout to window manager, and display
-		wm.addView(view, params);
+		Share.wm.addView(view, params);
 
 		// Add touch listener
 		view.setOnTouchListener(new IconOnTouch());
 		
-		// Task exit listener
-		taskview.findViewById(R.id.buttonExit).setOnClickListener(new ExitButtonOnClick());
-		taskview.findViewById(R.id.buttonGo).setOnClickListener(new GoButtonOnClick());
+		
 
 		// Set slow and fast app icons
 		slowAppIcons = new ImageView[3];
@@ -97,9 +77,7 @@ public class OverlayIcon {
 		slowAppIcons[1] = (ImageView) appview.findViewById(R.id.slowAppIcon2);
 		slowAppIcons[2] = (ImageView) appview.findViewById(R.id.slowAppIcon3);
 		
-		// Task app icon and name text views
-		taskAppIcon = (ImageView) taskview.findViewById(R.id.taskAppIcon);
-		taskAppName = (TextView) taskview.findViewById(R.id.taskAppName);
+		homeScreenIcon = (ImageView) appview.findViewById(R.id.homeScreenIcon);
 	}
 	
 	public void setFastApp(String[] packages) {
@@ -108,7 +86,7 @@ public class OverlayIcon {
 		for (i = 0; i < Math.min(packages.length, fastAppIcons.length); i++) {
 			Drawable icon;
 			try {
-				icon = pm.getApplicationIcon(packages[i]);
+				icon = Share.pm.getApplicationIcon(packages[i]);
 				fastAppIcons[i].setImageDrawable(icon);
 			} catch (NameNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -123,7 +101,7 @@ public class OverlayIcon {
 		for (i = 0; i < Math.min(packages.length, slowAppIcons.length); i++) {
 			Drawable icon;
 			try {
-				icon = pm.getApplicationIcon(packages[i]);
+				icon = Share.pm.getApplicationIcon(packages[i]);
 				slowAppIcons[i].setImageDrawable(icon);
 			} catch (NameNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -131,58 +109,42 @@ public class OverlayIcon {
 			}
 		}
 	}
-	
-	public void setTaskApp (String pkg, String name) {
-		Drawable icon;
-		try {
-			icon = pm.getApplicationIcon(pkg);
-			taskAppIcon.setImageDrawable(icon);
-			taskAppName.setText("name");
-		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		isThroughLauncher = false;
-	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	private class IconOnTouch implements OnTouchListener {
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
+			// Get absolute position on screen
+			int x = (int) event.getRawX();
+			int y = (int) event.getRawY();
+			
 			switch (event.getAction()) {
 			// Touch down: show icons
 			case MotionEvent.ACTION_DOWN:
 				showAppIcons();
 				break;
+			case MotionEvent.ACTION_MOVE:
+				break;
 			case MotionEvent.ACTION_UP:
-				//Log.v(TAG, "up " + event.getX() + ", " + event.getY());
-				int x = pxToDp(event.getX());
-				int y = 530 + pxToDp(event.getY());
-				Log.v(TAG, "   " + x + ", " + y);
-				if(x > 35 && x < 95 && y > 395 && y < 455) {
-					Intent launchIntent = pm.getLaunchIntentForPackage(slowApps[0]);
-					context.startActivity(launchIntent);
-					isThroughLauncher = true;
-				} else if (x > 95 && x < 155 && y > 335 && y < 395) {
-					Intent launchIntent = pm.getLaunchIntentForPackage(slowApps[1]);
-					context.startActivity(launchIntent);
-					isThroughLauncher = true;
-				} else if (x > 155 && x < 215 && y > 275 && y < 335) {
-					Intent launchIntent = pm.getLaunchIntentForPackage(slowApps[2]);
-					context.startActivity(launchIntent);
-					isThroughLauncher = true;
-				}  else if (x > 95 && x < 155 && y > 435 && y < 495) {
-					Intent launchIntent = pm.getLaunchIntentForPackage(fastApps[0]);
-					context.startActivity(launchIntent);
-					isThroughLauncher = true;
-				} else if (x > 155 && x < 215 && y > 375 && y < 435) {
-					Intent launchIntent = pm.getLaunchIntentForPackage(fastApps[1]);
-					context.startActivity(launchIntent);
-					isThroughLauncher = true;
-				} else if (x > 215 && x < 275 && y > 315 && y < 375) {
-					Intent launchIntent = pm.getLaunchIntentForPackage(fastApps[2]);
-					context.startActivity(launchIntent);
-					isThroughLauncher = true;
+				
+				if(inViewInBounds(slowAppIcons[0], x, y)) {
+					launchApp(slowApps[0]);
+				} else if (inViewInBounds(slowAppIcons[1], x, y)) {
+					launchApp(slowApps[1]);
+				} else if (inViewInBounds(slowAppIcons[2], x, y)) {
+					launchApp(slowApps[2]);
+				} else if (inViewInBounds(fastAppIcons[0], x, y)) {
+					launchApp(fastApps[0]);
+				} else if (inViewInBounds(fastAppIcons[1], x, y)) {
+					launchApp(fastApps[1]);
+				} else if (inViewInBounds(fastAppIcons[2], x, y)) {
+					launchApp(fastApps[2]);
+				} else if (inViewInBounds(homeScreenIcon, x, y)) {
+					Intent launchIntent = new Intent(Intent.ACTION_MAIN);
+					launchIntent.addCategory(Intent.CATEGORY_HOME);
+					launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					Share.activityContext.startActivity(launchIntent);
 				}
 				
 				// Touch up: hide icons
@@ -197,52 +159,58 @@ public class OverlayIcon {
 	}
 	
 	private void showAppIcons() {
-		wm.addView(appview, params2);
+		Share.wm.addView(appview, params2);
 	}
 	
 	private void hideAppIcons() {
-		wm.removeView(appview);
-	}
-	
-	private class ExitButtonOnClick implements OnClickListener {
-		
-		@Override
-		public void onClick(View arg0) {
-			System.exit(0);
-		}
-
-	}
-
-	private class GoButtonOnClick implements OnClickListener {
-
-		@Override
-		public void onClick(View arg0) {
-			hideTask();
-		}
-
-	}
-	
-	public void showTask() {
-		wm.addView(taskview, params2);
-	}
-	
-	public void hideTask() {
-		wm.removeView(taskview);
+		Share.wm.removeView(appview);
 	}
 	
 	public int dpToPx(int dp) {
-	    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+	    DisplayMetrics displayMetrics = Share.context.getResources().getDisplayMetrics();
 	    int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));       
 	    return px;
 	}
 	
 	public int pxToDp(float px) {
-	    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+	    DisplayMetrics displayMetrics = Share.context.getResources().getDisplayMetrics();
 	    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
 	    return dp;
 	}
 	
 	public boolean isThroughLauncher() {
-		return isThroughLauncher;
+		// Every time checked this flag, it will be reset to false
+		boolean is = isThroughLauncher;
+		isThroughLauncher = false;
+		return is;
+	}
+	
+	private boolean inViewInBounds(View view, int x, int y) {
+		Rect outRect = new Rect();
+		int[] location = new int[2];
+		view.getDrawingRect(outRect);
+		view.getLocationOnScreen(location);
+		outRect.offset(location[0], location[1]);
+		return outRect.contains(x, y);
+	}
+	
+	private void launchApp(String pkg) {
+		if(appInstalledOrNot(pkg)) {
+			Intent launchIntent = Share.pm.getLaunchIntentForPackage(pkg);
+			launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			Share.context.startActivity(launchIntent);
+			isThroughLauncher = true;
+		}
+	}
+
+	private boolean appInstalledOrNot(String pkg) {
+		boolean app_installed;
+		try {
+			Share.pm.getPackageInfo(pkg, PackageManager.GET_ACTIVITIES);
+			app_installed = true;
+		} catch (PackageManager.NameNotFoundException e) {
+			app_installed = false;
+		}
+		return app_installed;
 	}
 }

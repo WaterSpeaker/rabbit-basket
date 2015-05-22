@@ -10,6 +10,7 @@
         android:layout_height="50dp"
         android:layout_x="0dp"
         android:layout_y="0dp"
-        android:src="@drawable/ic_launcher" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/task_open_icon" />
 
 </AbsoluteLayout>

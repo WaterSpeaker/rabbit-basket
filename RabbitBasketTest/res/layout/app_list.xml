@@ -58,4 +58,13 @@
         android:src="@android:drawable/sym_def_app_icon"
         android:visibility="visible" />
 
+    <ImageView
+        android:id="@+id/homeScreenIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_x="261dp"
+        android:layout_y="243dp"
+        android:src="@drawable/launcher_screen_icon"
+        android:visibility="visible" />
+
 </AbsoluteLayout>

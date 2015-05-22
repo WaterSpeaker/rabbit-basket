@@ -20,17 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/taskAppIcon"
         android:layout_centerHorizontal="true"
-        android:text="App Name" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/taskAppIcon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="76dp"
-        android:text="Open the following application"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="App Name"
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/buttonExit"
@@ -48,5 +39,27 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="29dp"
         android:text="Go" />
+
+    <TextView
+        android:id="@+id/trailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:text="Trail Task"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/green" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/taskAppIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="58dp"
+        android:text="Open the following application"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/black" />
 
 </RelativeLayout>
