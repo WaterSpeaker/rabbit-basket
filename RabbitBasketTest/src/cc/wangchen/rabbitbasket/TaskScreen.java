@@ -1,15 +1,21 @@
 package cc.wangchen.rabbitbasket;
 
 import cc.wangchen.rabbitbasket.R.color;
+import android.app.NotificationManager;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +26,7 @@ public class TaskScreen {
 	private ImageView taskAppIcon; // Task application icon
 	private TextView taskAppName; // Task application name
 	private TextView trailText; // Trail/real task text
+	private Button goButton;
 	
 	// Parameters
 	private LayoutParams iconLayoutParams;
@@ -66,6 +73,8 @@ public class TaskScreen {
 		taskAppName = (TextView) taskScreen.findViewById(R.id.taskAppName);
 		// Description texts
 		trailText = (TextView) taskScreen.findViewById(R.id.trailText);
+		// Go button
+		goButton = (Button) taskScreen.findViewById(R.id.buttonGo);
 	}
 	
 	private void showIcon() {
@@ -97,8 +106,28 @@ public class TaskScreen {
 	}
 	
 	public void realTask() {
+		goButton.setBackgroundColor(Color.RED);
+		goButton.setTextColor(Color.WHITE);
 		trailText.setTextColor(Color.RED);
 		trailText.setText("Real Task");
+		simpleNotify("Trail Task Finished", "Now let's start real tasks...");
+	}
+	
+	public void doneTask() {
+		hideIcon();
+		simpleNotify("Real Task Finished", "You got a bunch of rabbits!");
+		System.exit(0);
+	}
+	
+	public void simpleNotify(String title, String text) {
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				Share.context).setSmallIcon(R.drawable.task_open_icon)
+				.setContentTitle(title)
+				.setContentText(text).setPriority(2);
+		NotificationManager mNotificationManager =
+		    (NotificationManager) Share.context.getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(111, mBuilder.build());
 	}
 	
 	public long getStartTime() {

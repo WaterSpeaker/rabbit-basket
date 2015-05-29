@@ -41,7 +41,8 @@
         android:layout_marginBottom="24dp"
         android:text="Trail Task"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/green" />
+        android:textColor="@color/green"
+        android:textSize="50sp" />
 
     <TextView
         android:id="@+id/textView2"

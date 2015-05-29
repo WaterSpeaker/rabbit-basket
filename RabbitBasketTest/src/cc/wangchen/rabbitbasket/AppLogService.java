@@ -81,10 +81,8 @@ public class AppLogService extends Service {
 							// If all task done
 							// Save data
 							writeToFile(result, "rabbit-basket-result.txt");
-							// Exit
-							android.os.Process.killProcess(android.os.Process
-									.myPid());
-							System.exit(1);
+							// Close task icon
+							task.doneTask();
 						}
 					} catch (Exception e) {
 					}

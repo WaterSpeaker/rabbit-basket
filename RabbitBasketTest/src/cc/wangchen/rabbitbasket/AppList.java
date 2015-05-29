@@ -532,7 +532,7 @@ public final class AppList {
 			{ "Gmail", "com.google.android.gm" },
 			{ "Google +", "com.google.android.apps.plus" },
 			{ "Instagram", "com.instagram.android" },
-			{ "Google Maps", "com.google.android.gm" },
+			{ "Google Maps", "com.google.android.apps.maps" },
 			{ "Facebook", "com.facebook.katana" },
 			{ "Dropbox", "com.dropbox.android" },
 			{ "Youtube", "com.google.android.youtube" },
