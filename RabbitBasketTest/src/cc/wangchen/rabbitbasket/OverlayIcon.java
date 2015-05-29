@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -125,6 +126,28 @@ public class OverlayIcon {
 				showAppIcons();
 				break;
 			case MotionEvent.ACTION_MOVE:
+				slowAppIcons[0].setBackgroundColor(Color.TRANSPARENT);
+				slowAppIcons[1].setBackgroundColor(Color.TRANSPARENT);
+				slowAppIcons[2].setBackgroundColor(Color.TRANSPARENT);
+				fastAppIcons[0].setBackgroundColor(Color.TRANSPARENT);
+				fastAppIcons[1].setBackgroundColor(Color.TRANSPARENT);
+				fastAppIcons[2].setBackgroundColor(Color.TRANSPARENT);
+				homeScreenIcon.setBackgroundColor(Color.TRANSPARENT);
+				if(inViewInBounds(slowAppIcons[0], x, y)) {
+					slowAppIcons[0].setBackgroundColor(Color.BLACK);
+				} else if (inViewInBounds(slowAppIcons[1], x, y)) {
+					slowAppIcons[1].setBackgroundColor(Color.BLACK);
+				} else if (inViewInBounds(slowAppIcons[2], x, y)) {
+					slowAppIcons[2].setBackgroundColor(Color.BLACK);
+				} else if (inViewInBounds(fastAppIcons[0], x, y)) {
+					fastAppIcons[0].setBackgroundColor(Color.BLACK);
+				} else if (inViewInBounds(fastAppIcons[1], x, y)) {
+					fastAppIcons[1].setBackgroundColor(Color.BLACK);
+				} else if (inViewInBounds(fastAppIcons[2], x, y)) {
+					fastAppIcons[2].setBackgroundColor(Color.BLACK);
+				} else if (inViewInBounds(homeScreenIcon, x, y)) {
+					homeScreenIcon.setBackgroundColor(Color.BLACK);
+				}
 				break;
 			case MotionEvent.ACTION_UP:
 				
