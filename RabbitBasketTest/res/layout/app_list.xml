@@ -7,64 +7,71 @@
 
     <ImageView
         android:id="@+id/slowAppIcon3"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_x="160dp"
         android:layout_y="280dp"
+        android:padding="10dp"
         android:src="@android:drawable/sym_def_app_icon"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/fastAppIcon1"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_x="100dp"
         android:layout_y="440dp"
+        android:padding="10dp"
         android:src="@android:drawable/sym_def_app_icon"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/fastAppIcon2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_x="160dp"
         android:layout_y="380dp"
+        android:padding="10dp"
         android:src="@android:drawable/sym_def_app_icon"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/fastAppIcon3"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_x="220dp"
         android:layout_y="320dp"
+        android:padding="10dp"
         android:src="@android:drawable/sym_def_app_icon"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/slowAppIcon2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_x="100dp"
         android:layout_y="340dp"
+        android:padding="10dp"
         android:src="@android:drawable/sym_def_app_icon"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/slowAppIcon1"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_x="40dp"
         android:layout_y="400dp"
+        android:padding="10dp"
         android:src="@android:drawable/sym_def_app_icon"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/homeScreenIcon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_x="261dp"
         android:layout_y="243dp"
+        android:padding="10dp"
         android:src="@drawable/launcher_screen_icon"
         android:visibility="visible" />
 

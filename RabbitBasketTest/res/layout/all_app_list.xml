@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:alignmentMode="alignMargins"
-        android:columnCount="5"
+        android:columnCount="4"
         android:orientation="horizontal"
         android:padding="10dp"
         android:useDefaultMargins="true" >

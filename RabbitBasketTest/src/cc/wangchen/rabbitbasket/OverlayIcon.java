@@ -1,5 +1,6 @@
 package cc.wangchen.rabbitbasket;
 
+import java.util.Collections;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -25,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class OverlayIcon {
 	// Views
@@ -48,8 +50,8 @@ public class OverlayIcon {
 	public void init() {
 		// Set layout parameters
 		params = new WindowManager.LayoutParams(
-				150,
-				150,
+				WindowManager.LayoutParams.WRAP_CONTENT,
+				WindowManager.LayoutParams.WRAP_CONTENT,
 				WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
 						| WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
@@ -96,9 +98,13 @@ public class OverlayIcon {
 		GridLayout layout = (GridLayout) allappview.findViewById(R.id.all_app_list);
 		
 		List<ApplicationInfo> packages = Share.pm.getInstalledApplications(PackageManager.GET_META_DATA);
+		
+		Collections.sort(packages, new ApplicationInfo.DisplayNameComparator(Share.pm));
 
 		for (final ApplicationInfo packageInfo : packages) {
+			LinearLayout appgroup = new LinearLayout(Share.context);
 			ImageView appicon = new ImageView(Share.context);
+			TextView appname = new TextView(Share.context);
 			Drawable icon;
 			try {
 				if(isSystemPackage(packageInfo)) {
@@ -107,11 +113,18 @@ public class OverlayIcon {
 				icon = Share.pm.getApplicationIcon(packageInfo.packageName);
 				icon = resize(icon);
 				appicon.setImageDrawable(icon);
-				appicon.setMaxWidth(48);
-				appicon.setMaxHeight(48);
+				appicon.setPadding(30, 40, 30, 20);
 				appicon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-				layout.addView(appicon);
-				appicon.setOnClickListener(new OnClickListener() {
+				appname.setText(Share.pm.getApplicationLabel(packageInfo).toString());
+				appname.setTextColor(Color.BLACK);
+				appname.setMaxWidth(200);
+				appname.setGravity(Gravity.CENTER);
+				appname.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+				appgroup.setOrientation(LinearLayout.VERTICAL);
+				appgroup.addView(appicon);
+				appgroup.addView(appname);
+				layout.addView(appgroup);
+				appgroup.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
@@ -136,6 +149,7 @@ public class OverlayIcon {
 			Drawable icon;
 			try {
 				icon = Share.pm.getApplicationIcon(packages[i]);
+				icon = resize(icon);
 				fastAppIcons[i].setImageDrawable(icon);
 			} catch (NameNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -151,6 +165,7 @@ public class OverlayIcon {
 			Drawable icon;
 			try {
 				icon = Share.pm.getApplicationIcon(packages[i]);
+				icon = resize(icon);
 				slowAppIcons[i].setImageDrawable(icon);
 			} catch (NameNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -174,27 +189,27 @@ public class OverlayIcon {
 				showAppIcons();
 				break;
 			case MotionEvent.ACTION_MOVE:
-				slowAppIcons[0].setBackgroundColor(Color.TRANSPARENT);
-				slowAppIcons[1].setBackgroundColor(Color.TRANSPARENT);
-				slowAppIcons[2].setBackgroundColor(Color.TRANSPARENT);
-				fastAppIcons[0].setBackgroundColor(Color.TRANSPARENT);
-				fastAppIcons[1].setBackgroundColor(Color.TRANSPARENT);
-				fastAppIcons[2].setBackgroundColor(Color.TRANSPARENT);
-				homeScreenIcon.setBackgroundColor(Color.TRANSPARENT);
+				slowAppIcons[0].setBackgroundResource(0);
+				slowAppIcons[1].setBackgroundResource(0);
+				slowAppIcons[2].setBackgroundResource(0);
+				fastAppIcons[0].setBackgroundResource(0);
+				fastAppIcons[1].setBackgroundResource(0);
+				fastAppIcons[2].setBackgroundResource(0);
+				homeScreenIcon.setBackgroundResource(0);
 				if(inViewInBounds(slowAppIcons[0], x, y)) {
-					slowAppIcons[0].setBackgroundColor(Color.BLACK);
+					slowAppIcons[0].setBackgroundResource(R.drawable.round);
 				} else if (inViewInBounds(slowAppIcons[1], x, y)) {
-					slowAppIcons[1].setBackgroundColor(Color.BLACK);
+					slowAppIcons[1].setBackgroundResource(R.drawable.round);
 				} else if (inViewInBounds(slowAppIcons[2], x, y)) {
-					slowAppIcons[2].setBackgroundColor(Color.BLACK);
+					slowAppIcons[2].setBackgroundResource(R.drawable.round);
 				} else if (inViewInBounds(fastAppIcons[0], x, y)) {
-					fastAppIcons[0].setBackgroundColor(Color.BLACK);
+					fastAppIcons[0].setBackgroundResource(R.drawable.round);
 				} else if (inViewInBounds(fastAppIcons[1], x, y)) {
-					fastAppIcons[1].setBackgroundColor(Color.BLACK);
+					fastAppIcons[1].setBackgroundResource(R.drawable.round);
 				} else if (inViewInBounds(fastAppIcons[2], x, y)) {
-					fastAppIcons[2].setBackgroundColor(Color.BLACK);
+					fastAppIcons[2].setBackgroundResource(R.drawable.round);
 				} else if (inViewInBounds(homeScreenIcon, x, y)) {
-					homeScreenIcon.setBackgroundColor(Color.BLACK);
+					homeScreenIcon.setBackgroundResource(R.drawable.round);
 				}
 				break;
 			case MotionEvent.ACTION_UP:
@@ -291,7 +306,7 @@ public class OverlayIcon {
 	}
 	
 	private boolean isSystemPackage(ApplicationInfo pkgInfo) {
-		if(pkgInfo.packageName == "com.hp.android.printservice") {
+		if(pkgInfo.packageName.equals("com.hp.android.printservice")) {
 			return true;
 		}
 		if(pkgInfo.packageName.equals("com.google.android.apps.maps") ||
