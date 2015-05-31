@@ -1,25 +1,36 @@
 package cc.wangchen.rabbitbasket;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class OverlayIcon {
 	// Views
 	private View view;
 	private View appview;
+	private View allappview;
 	private WindowManager.LayoutParams params;
 	private WindowManager.LayoutParams params2;
 	private ImageView[] slowAppIcons;
@@ -58,6 +69,7 @@ public class OverlayIcon {
 		// Initialize view
 		appview = Share.inflater.inflate(R.layout.app_list, null);
 		view = Share.inflater.inflate(R.layout.overlay_icon, null);
+		allappview = Share.inflater.inflate(R.layout.all_app_list, null);
 
 		// Add layout to window manager, and display
 		Share.wm.addView(view, params);
@@ -79,6 +91,42 @@ public class OverlayIcon {
 		slowAppIcons[2] = (ImageView) appview.findViewById(R.id.slowAppIcon3);
 		
 		homeScreenIcon = (ImageView) appview.findViewById(R.id.homeScreenIcon);
+		
+		// Initial all application list
+		GridLayout layout = (GridLayout) allappview.findViewById(R.id.all_app_list);
+		
+		List<ApplicationInfo> packages = Share.pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+		for (final ApplicationInfo packageInfo : packages) {
+			ImageView appicon = new ImageView(Share.context);
+			Drawable icon;
+			try {
+				if(isSystemPackage(packageInfo)) {
+					continue;
+				}
+				icon = Share.pm.getApplicationIcon(packageInfo.packageName);
+				icon = resize(icon);
+				appicon.setImageDrawable(icon);
+				appicon.setMaxWidth(48);
+				appicon.setMaxHeight(48);
+				appicon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+				layout.addView(appicon);
+				appicon.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						launchApp(packageInfo.packageName);
+						hideAllAppIcons();
+					}
+					
+				});
+			} catch (NameNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 	}
 	
 	public void setFastApp(String[] packages) {
@@ -164,10 +212,7 @@ public class OverlayIcon {
 				} else if (inViewInBounds(fastAppIcons[2], x, y)) {
 					launchApp(fastApps[2]);
 				} else if (inViewInBounds(homeScreenIcon, x, y)) {
-					Intent launchIntent = new Intent(Intent.ACTION_MAIN);
-					launchIntent.addCategory(Intent.CATEGORY_HOME);
-					launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					Share.activityContext.startActivity(launchIntent);
+					showAllAppIcons();
 				}
 				
 				// Touch up: hide icons
@@ -187,6 +232,14 @@ public class OverlayIcon {
 	
 	private void hideAppIcons() {
 		Share.wm.removeView(appview);
+	}
+	
+	private void showAllAppIcons() {
+		Share.wm.addView(allappview, params2);
+	}
+	
+	private void hideAllAppIcons() {
+		Share.wm.removeView(allappview);
 	}
 	
 	public int dpToPx(int dp) {
@@ -235,5 +288,29 @@ public class OverlayIcon {
 			app_installed = false;
 		}
 		return app_installed;
+	}
+	
+	private boolean isSystemPackage(ApplicationInfo pkgInfo) {
+		if(pkgInfo.packageName == "com.hp.android.printservice") {
+			return true;
+		}
+		if(pkgInfo.packageName.equals("com.google.android.apps.maps") ||
+				pkgInfo.packageName.equals("com.google.android.gm") ||
+				pkgInfo.packageName.equals("com.google.android.apps.plus") ||
+				pkgInfo.packageName.equals("com.google.android.youtube") ||
+				pkgInfo.packageName.equals("com.android.vending")) {
+			return false;
+		}
+	    return ((pkgInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) ? true
+	            : false;
+	}
+	
+	private Drawable resize(Drawable image) {
+	    Bitmap b = ((BitmapDrawable)image).getBitmap();
+	    if(b.getWidth() <= 144) {
+	    	return image;
+	    }
+	    Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 144, 144, false);
+	    return new BitmapDrawable(Share.context.getResources(), bitmapResized);
 	}
 }
