@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -78,9 +80,12 @@ public class AppLogService extends Service {
 						}
 
 						if (taskCount >= AppList.TASK_APP_NUMBER) {
+							SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
+						    Date now = new Date();
+						    String strDate = sdfDate.format(now);
 							// If all task done
 							// Save data
-							writeToFile(result, "rabbit-basket-result.txt");
+							writeToFile(result, "result-"+ strDate + ".txt");
 							// Close task icon
 							task.doneTask();
 						}
@@ -215,7 +220,9 @@ public class AppLogService extends Service {
 		row += AppList.FAST_APP_LIST[taskCount][2] + ",";
 		
 		// If through launcher
-		row += icon.isThroughLauncher() + "\n";
+		row += icon.isThroughLauncher() + ",";
+		// If through full list
+		row += icon.isThroughFullList() + "\n";
 		
 		Log.v(TAG, row);
 		result += row;

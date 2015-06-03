@@ -42,6 +42,7 @@ public class OverlayIcon {
 	private ImageView homeScreenIcon;
 	
 	private boolean isThroughLauncher = false;
+	private boolean isThroughFullList = false;
 
 	public OverlayIcon() {
 		
@@ -54,7 +55,8 @@ public class OverlayIcon {
 				WindowManager.LayoutParams.WRAP_CONTENT,
 				WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-						| WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+						| WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+						| WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
 				PixelFormat.TRANSLUCENT);
 		params2 = new WindowManager.LayoutParams(
 				WindowManager.LayoutParams.MATCH_PARENT,
@@ -65,9 +67,9 @@ public class OverlayIcon {
 				PixelFormat.TRANSLUCENT);
 		// Change position
 	    params.gravity=Gravity.BOTTOM|Gravity.LEFT;
-	    params.x=0;
-	    params.y=0;
-
+	    params.x = 0;
+	    params.y = 0;
+	    
 		// Initialize view
 		appview = Share.inflater.inflate(R.layout.app_list, null);
 		view = Share.inflater.inflate(R.layout.overlay_icon, null);
@@ -128,7 +130,7 @@ public class OverlayIcon {
 
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
+						isThroughFullList = true;
 						launchApp(packageInfo.packageName);
 						hideAllAppIcons();
 					}
@@ -273,6 +275,13 @@ public class OverlayIcon {
 		// Every time checked this flag, it will be reset to false
 		boolean is = isThroughLauncher;
 		isThroughLauncher = false;
+		return is;
+	}
+	
+	public boolean isThroughFullList() {
+		// Every time checked this flag, it will be reset to false
+		boolean is = isThroughFullList;
+		isThroughFullList = false;
 		return is;
 	}
 	

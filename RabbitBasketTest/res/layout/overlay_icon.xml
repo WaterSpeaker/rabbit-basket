@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_x="0dp"
         android:layout_y="0dp"
-        android:padding="10dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/round_2" />
 
 </AbsoluteLayout>
