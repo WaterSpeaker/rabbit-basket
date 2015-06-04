@@ -9,11 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:alignmentMode="alignMargins"
         android:columnCount="4"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:useDefaultMargins="true" >
+        android:useDefaultMargins="false" >
 
     </GridLayout>
 

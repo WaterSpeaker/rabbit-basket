@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -12,11 +14,14 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,6 +48,8 @@ public class OverlayIcon {
 	
 	private boolean isThroughLauncher = false;
 	private boolean isThroughFullList = false;
+	
+	private int iconSize;
 
 	public OverlayIcon() {
 		
@@ -81,6 +88,7 @@ public class OverlayIcon {
 		// Add touch listener
 		view.setOnTouchListener(new IconOnTouch());
 		
+		iconSize = getIconSize();
 		
 
 		// Set slow and fast app icons
@@ -115,17 +123,29 @@ public class OverlayIcon {
 				icon = Share.pm.getApplicationIcon(packageInfo.packageName);
 				icon = resize(icon);
 				appicon.setImageDrawable(icon);
-				appicon.setPadding(30, 40, 30, 20);
-				appicon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-				appname.setText(Share.pm.getApplicationLabel(packageInfo).toString());
-				appname.setTextColor(Color.BLACK);
-				appname.setMaxWidth(200);
-				appname.setGravity(Gravity.CENTER);
-				appname.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
-				appgroup.setOrientation(LinearLayout.VERTICAL);
+				
 				appgroup.addView(appicon);
 				appgroup.addView(appname);
 				layout.addView(appgroup);
+				
+				Display display = Share.wm.getDefaultDisplay();
+				Point size = new Point();
+				display.getSize(size);
+				int screenWidth = size.x;
+				int gridSize = screenWidth / 4;
+				Log.v("H", screenWidth + ", " + iconSize);
+				int padding = ( screenWidth / 4 - iconSize ) / 2;
+				
+				appicon.setPadding(padding, padding, padding, (int)(padding * 0.5));
+				appicon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+				appname.setText(Share.pm.getApplicationLabel(packageInfo).toString());
+				appname.setTextColor(Color.BLACK);
+				appname.setWidth(gridSize);
+				appname.setPadding(0, 0, 0, padding);
+				appname.setGravity(Gravity.CENTER);
+				appname.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+				appgroup.setOrientation(LinearLayout.VERTICAL);
+				
 				appgroup.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -331,10 +351,12 @@ public class OverlayIcon {
 	
 	private Drawable resize(Drawable image) {
 	    Bitmap b = ((BitmapDrawable)image).getBitmap();
-	    if(b.getWidth() <= 144) {
-	    	return image;
-	    }
-	    Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 144, 144, false);
+	    Bitmap bitmapResized = Bitmap.createScaledBitmap(b, iconSize, iconSize, false);
 	    return new BitmapDrawable(Share.context.getResources(), bitmapResized);
+	}
+	
+	private int getIconSize() {
+		ActivityManager am = (ActivityManager) Share.activityContext.getSystemService(Context.ACTIVITY_SERVICE);
+		return am.getLauncherLargeIconSize();
 	}
 }
