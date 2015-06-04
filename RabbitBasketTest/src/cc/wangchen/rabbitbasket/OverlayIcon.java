@@ -31,6 +31,7 @@ import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class OverlayIcon {
@@ -166,11 +167,14 @@ public class OverlayIcon {
 	
 	public void setFastApp(String[] packages) {
 		fastApps = packages;
+	}
+	
+	private void updateFastApp() {
 		int i;
-		for (i = 0; i < Math.min(packages.length, fastAppIcons.length); i++) {
+		for (i = 0; i < Math.min(fastApps.length, fastAppIcons.length); i++) {
 			Drawable icon;
 			try {
-				icon = Share.pm.getApplicationIcon(packages[i]);
+				icon = Share.pm.getApplicationIcon(fastApps[i]);
 				icon = resize(icon);
 				fastAppIcons[i].setImageDrawable(icon);
 			} catch (NameNotFoundException e) {
@@ -208,6 +212,7 @@ public class OverlayIcon {
 			switch (event.getAction()) {
 			// Touch down: show icons
 			case MotionEvent.ACTION_DOWN:
+				updateFastApp();
 				showAppIcons();
 				break;
 			case MotionEvent.ACTION_MOVE:
@@ -272,6 +277,7 @@ public class OverlayIcon {
 	}
 	
 	private void showAllAppIcons() {
+		((ScrollView) allappview.findViewById(R.id.all_app_scroll)).fullScroll(ScrollView.FOCUS_UP);
 		Share.wm.addView(allappview, params2);
 	}
 	
@@ -349,13 +355,13 @@ public class OverlayIcon {
 	            : false;
 	}
 	
-	private Drawable resize(Drawable image) {
+	public static Drawable resize(Drawable image) {
 	    Bitmap b = ((BitmapDrawable)image).getBitmap();
-	    Bitmap bitmapResized = Bitmap.createScaledBitmap(b, iconSize, iconSize, false);
+	    Bitmap bitmapResized = Bitmap.createScaledBitmap(b, getIconSize(), getIconSize(), false);
 	    return new BitmapDrawable(Share.context.getResources(), bitmapResized);
 	}
 	
-	private int getIconSize() {
+	public static int getIconSize() {
 		ActivityManager am = (ActivityManager) Share.activityContext.getSystemService(Context.ACTIVITY_SERVICE);
 		return am.getLauncherLargeIconSize();
 	}

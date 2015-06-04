@@ -32,6 +32,9 @@ public class TaskScreen {
 	private LayoutParams iconLayoutParams;
 	private LayoutParams screenLayoutParams;
 	
+	private String taskPackage;
+	private String taskName;
+	
 	// Data
 	private long startTime;
 	
@@ -94,11 +97,18 @@ public class TaskScreen {
 	}
 	
 	public void setTask(String pkg, String name) {
+		taskPackage = pkg;
+		taskName = name;
+		
+	}
+	
+	private void updateTaskScreen() {
 		Drawable icon;
 		try {
-			icon = Share.pm.getApplicationIcon(pkg);
+			icon = Share.pm.getApplicationIcon(taskPackage);
+			OverlayIcon.resize(icon);
 			taskAppIcon.setImageDrawable(icon);
-			taskAppName.setText(name);
+			taskAppName.setText(taskName);
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,6 +164,7 @@ public class TaskScreen {
 
 		@Override
 		public void onClick(View arg0) {
+			updateTaskScreen();
 			showScreen();
 		}
 		

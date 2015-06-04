@@ -89,7 +89,7 @@ public final class AppList {
 			"com.skype.raider", // Skype,
 			"com.pinterest" // Pinterest
 	}, { "com.google.android.apps.maps", // Google Maps
-			"com.twitter.android", // Netflix
+			"com.netflix.mediaclient", // Netflix
 			"com.snapchat.android" // snapchat
 	}, { "com.google.android.gm", // Gmail
 			"com.facebook.orca", // Facebook Messenger
