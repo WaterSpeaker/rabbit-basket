@@ -4,7 +4,7 @@ public final class AppList {
 	// Constants
 	public static final int FAST_APP_NUMBER = 3;
 	public static final int SLOW_APP_NUMBER = 3;
-	public static final int TASK_APP_NUMBER = 150;
+	public static final int TASK_APP_NUMBER = 140;
 	public static final int TRAIL_TASK_APP_NUMBER = 60;
 	public static String[] SLOW_APP_LIST = { "com.facebook.katana", // Facebook
 			"com.google.android.youtube", // YouTube
@@ -465,14 +465,16 @@ public final class AppList {
 			{ "Youtube", "com.google.android.youtube" },
 			{ "Twitter", "com.twitter.android" },
 			{ "Youtube", "com.google.android.youtube" },
-			{ "Whatsapp", "com.whatsapp" }, { "Pinterest", "com.pinterest" },
+			{ "Whatsapp", "com.whatsapp" },
+			{ "Pinterest", "com.pinterest" },
 			{ "Snapchat", "com.snapchat.android" },
 			{ "Facebook", "com.facebook.katana" },
 			{ "Youtube", "com.google.android.youtube" },
 			{ "Instagram", "com.instagram.android" },
 			{ "Amazon Shopping", "com.amazon.mShop.android.shopping" },
 			{ "Google +", "com.google.android.apps.plus" },
-			{ "Skype", "com.skype.raider" }, { "Evernote", "com.evernote" },
+			{ "Skype", "com.skype.raider" },
+			{ "Evernote", "com.evernote" },
 			{ "WhatsApp", "com.whatsapp" },
 			{ "Facebook Messenger", "com.facebook.orca" },
 			{ "Dropbox", "com.dropbox.android" },
@@ -502,7 +504,8 @@ public final class AppList {
 			{ "Dropbox", "com.dropbox.android" },
 			{ "Facebook", "com.facebook.katana" },
 			{ "Gmail", "com.google.android.gm" },
-			{ "WhatsApp", "com.whatsapp" }, { "Evernote", "com.evernote" },
+			{ "WhatsApp", "com.whatsapp" },
+			{ "Evernote", "com.evernote" },
 			{ "Facebook", "com.facebook.katana" },
 			{ "Google Play", "com.android.vending" },
 			{ "Pinterest", "com.pinterest" },
@@ -541,7 +544,8 @@ public final class AppList {
 			{ "Youtube", "com.google.android.youtube" },
 			{ "Dropbox", "com.dropbox.android" },
 			{ "Facebook Messenger", "com.facebook.orca" },
-			{ "Whatsapp", "com.whatsapp" }, { "Pinterest", "com.pinterest" },
+			{ "Whatsapp", "com.whatsapp" },
+			{ "Pinterest", "com.pinterest" },
 			{ "Instagram", "com.instagram.android" },
 			{ "Facebook", "com.facebook.katana" },
 			{ "Gmail", "com.google.android.gm" },

@@ -8,7 +8,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
@@ -18,9 +17,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -134,7 +131,6 @@ public class OverlayIcon {
 				display.getSize(size);
 				int screenWidth = size.x;
 				int gridSize = screenWidth / 4;
-				Log.v("H", screenWidth + ", " + iconSize);
 				int padding = ( screenWidth / 4 - iconSize ) / 2;
 				
 				appicon.setPadding(padding, padding, padding, (int)(padding * 0.5));
@@ -341,18 +337,12 @@ public class OverlayIcon {
 	}
 	
 	private boolean isSystemPackage(ApplicationInfo pkgInfo) {
-		if(pkgInfo.packageName.equals("com.hp.android.printservice")) {
+		Intent intent = Share.pm.getLaunchIntentForPackage(pkgInfo.packageName); 
+		if(intent == null) {
 			return true;
-		}
-		if(pkgInfo.packageName.equals("com.google.android.apps.maps") ||
-				pkgInfo.packageName.equals("com.google.android.gm") ||
-				pkgInfo.packageName.equals("com.google.android.apps.plus") ||
-				pkgInfo.packageName.equals("com.google.android.youtube") ||
-				pkgInfo.packageName.equals("com.android.vending")) {
+		} else {
 			return false;
 		}
-	    return ((pkgInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) ? true
-	            : false;
 	}
 	
 	public static Drawable resize(Drawable image) {

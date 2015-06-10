@@ -72,6 +72,8 @@ public class AppLogService extends Service {
 						
 						if (!currentPackage.equals(lastPackage)
 								&& !currentPackage.equals("com.google.android.googlequicksearchbox")
+								&& !currentPackage.equals("com.sonyericsson.home")
+								&& !currentPackage.equals("android")
 								&& !currentPackage.equals("cc.wangchen.rabbitbasket")) {
 							// User action done, record data
 							record();
