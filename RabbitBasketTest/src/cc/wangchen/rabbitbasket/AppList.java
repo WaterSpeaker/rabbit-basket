@@ -601,6 +601,5 @@ public final class AppList {
 			{ "Google Play", "com.android.vending" },
 			{ "evernote", "com.evernote" },
 			{ "Facebook Messenger", "com.facebook.orca" },
-			{ "Gmail", "com.google.android.gm" },
-			{ "Netflix", "com.netflix.mediaclient" } };
+			{ "Gmail", "com.google.android.gm" } };
 }

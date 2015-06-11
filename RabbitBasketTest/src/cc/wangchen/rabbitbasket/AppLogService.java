@@ -50,6 +50,7 @@ public class AppLogService extends Service {
 	private String currentPackage;
 	private String lastPackage;
 	private String result;
+	
 	// Constants and Flags
 	private static final String TAG = "AppLog";
 
@@ -74,11 +75,16 @@ public class AppLogService extends Service {
 								&& !currentPackage.equals("com.google.android.googlequicksearchbox")
 								&& !currentPackage.equals("com.sonyericsson.home")
 								&& !currentPackage.equals("android")
-								&& !currentPackage.equals("cc.wangchen.rabbitbasket")) {
+								&& !currentPackage.equals("cc.wangchen.rabbitbasket")
+								&& task.isStarted()) {
 							// User action done, record data
 							record();
 							// Next task
 							nextTask();
+							// Pause task until next "Go" button click
+							task.notStarted();
+							// Sleep for 1 s
+							//wait(500);
 						}
 
 						if (taskCount >= AppList.TASK_APP_NUMBER) {

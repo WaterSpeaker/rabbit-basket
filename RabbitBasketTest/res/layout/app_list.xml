@@ -6,73 +6,73 @@
     android:background="@color/white_transparent" >
 
     <ImageView
+        android:id="@+id/homeScreenIcon"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_x="282dp"
+        android:layout_y="273dp"
+        android:padding="10dp"
+        android:src="@drawable/launcher_screen_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/slowAppIcon1"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_x="15dp"
+        android:layout_y="406dp"
+        android:padding="10dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
         android:id="@+id/slowAppIcon3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="160dp"
-        android:layout_y="280dp"
-        android:padding="10dp"
-        android:src="@android:drawable/sym_def_app_icon"
-        android:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/fastAppIcon1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="100dp"
-        android:layout_y="440dp"
-        android:padding="10dp"
-        android:src="@android:drawable/sym_def_app_icon"
-        android:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/fastAppIcon2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="160dp"
-        android:layout_y="380dp"
-        android:padding="10dp"
-        android:src="@android:drawable/sym_def_app_icon"
-        android:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/fastAppIcon3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="220dp"
-        android:layout_y="320dp"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_x="193dp"
+        android:layout_y="273dp"
         android:padding="10dp"
         android:src="@android:drawable/sym_def_app_icon"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/slowAppIcon2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="100dp"
-        android:layout_y="340dp"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_x="94dp"
+        android:layout_y="323dp"
         android:padding="10dp"
         android:src="@android:drawable/sym_def_app_icon"
         android:visibility="visible" />
 
     <ImageView
-        android:id="@+id/slowAppIcon1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="40dp"
+        android:id="@+id/fastAppIcon3"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_x="244dp"
+        android:layout_y="356dp"
+        android:padding="10dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/fastAppIcon1"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_x="91dp"
+        android:layout_y="458dp"
+        android:padding="10dp"
+        android:src="@android:drawable/sym_def_app_icon"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/fastAppIcon2"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_x="161dp"
         android:layout_y="400dp"
         android:padding="10dp"
         android:src="@android:drawable/sym_def_app_icon"
-        android:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/homeScreenIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="261dp"
-        android:layout_y="243dp"
-        android:padding="10dp"
-        android:src="@drawable/launcher_screen_icon"
         android:visibility="visible" />
 
 </AbsoluteLayout>

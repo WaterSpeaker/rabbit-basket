@@ -18,6 +18,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -46,6 +47,7 @@ public class OverlayIcon {
 	
 	private boolean isThroughLauncher = false;
 	private boolean isThroughFullList = false;
+	private boolean isThroughAndroidAppList = false;
 	
 	private int iconSize;
 
@@ -60,7 +62,7 @@ public class OverlayIcon {
 				WindowManager.LayoutParams.WRAP_CONTENT,
 				WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-						| WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+						| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
 						| WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
 				PixelFormat.TRANSLUCENT);
 		params2 = new WindowManager.LayoutParams(
@@ -131,10 +133,11 @@ public class OverlayIcon {
 				display.getSize(size);
 				int screenWidth = size.x;
 				int gridSize = screenWidth / 4;
-				int padding = ( screenWidth / 4 - iconSize ) / 2;
+				int padding = ( gridSize - iconSize * 3 / 2 ) / 2;
 				
+				appicon.setMinimumWidth(gridSize);
+				appicon.setMinimumHeight(gridSize);
 				appicon.setPadding(padding, padding, padding, (int)(padding * 0.5));
-				appicon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 				appname.setText(Share.pm.getApplicationLabel(packageInfo).toString());
 				appname.setTextColor(Color.BLACK);
 				appname.setWidth(gridSize);
@@ -205,7 +208,7 @@ public class OverlayIcon {
 			int x = (int) event.getRawX();
 			int y = (int) event.getRawY();
 			
-			switch (event.getAction()) {
+			switch (event.getActionMasked()) {
 			// Touch down: show icons
 			case MotionEvent.ACTION_DOWN:
 				updateFastApp();
@@ -255,6 +258,10 @@ public class OverlayIcon {
 				
 				// Touch up: hide icons
 				hideAppIcons();
+				break;
+			case MotionEvent.ACTION_OUTSIDE:
+				Log.v("Outside Touch", event.getRawX() + ", " + event.getRawY());
+				Log.v("Outside Touch", event.toString());
 				break;
 			default:
 				break;

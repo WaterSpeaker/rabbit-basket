@@ -37,6 +37,7 @@ public class TaskScreen {
 	
 	// Data
 	private long startTime;
+	private boolean isStarted = false;
 	
 	public TaskScreen() {
 		
@@ -53,7 +54,7 @@ public class TaskScreen {
 		iconLayoutParams = new LayoutParams(150, 150,
 				WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-						| WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+						| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
 				PixelFormat.TRANSLUCENT);
 		iconLayoutParams.gravity=Gravity.TOP|Gravity.RIGHT;
 		iconLayoutParams.x=20;
@@ -148,6 +149,14 @@ public class TaskScreen {
 		startTime = System.currentTimeMillis();
 	}
 	
+	public boolean isStarted() {
+		return isStarted;
+	}
+	
+	public void notStarted() {
+		isStarted = false;
+	}
+	
 	private void addListeners() {
 		// Open task screen
 		taskOpenIcon.setOnClickListener(new OpenIconOnClick());
@@ -185,6 +194,7 @@ public class TaskScreen {
 		public void onClick(View arg0) {
 			hideScreen();
 			setStartTime();
+			isStarted = true;
 		}
 
 	}
