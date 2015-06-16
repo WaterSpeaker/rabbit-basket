@@ -49,6 +49,9 @@ public class OverlayIcon {
 	private boolean isThroughFullList = false;
 	private boolean isThroughAndroidAppList = false;
 	
+	private long openLauncherTime;
+	private long openFullListTime;
+	
 	private int iconSize;
 
 	public OverlayIcon() {
@@ -211,6 +214,7 @@ public class OverlayIcon {
 			switch (event.getActionMasked()) {
 			// Touch down: show icons
 			case MotionEvent.ACTION_DOWN:
+				openLauncherTime = System.currentTimeMillis();
 				updateFastApp();
 				showAppIcons();
 				break;
@@ -254,6 +258,7 @@ public class OverlayIcon {
 					launchApp(fastApps[2]);
 				} else if (inViewInBounds(homeScreenIcon, x, y)) {
 					showAllAppIcons();
+					openFullListTime = System.currentTimeMillis();
 				}
 				
 				// Touch up: hide icons
@@ -312,6 +317,14 @@ public class OverlayIcon {
 		boolean is = isThroughFullList;
 		isThroughFullList = false;
 		return is;
+	}
+	
+	public long getOpenLuncherTime() {
+		return openLauncherTime;
+	}
+	
+	public long getOpenFullListTime() {
+		return openFullListTime;
 	}
 	
 	private boolean inViewInBounds(View view, int x, int y) {

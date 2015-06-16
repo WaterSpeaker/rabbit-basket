@@ -230,7 +230,10 @@ public class AppLogService extends Service {
 		// If through launcher
 		row += icon.isThroughLauncher() + ",";
 		// If through full list
-		row += icon.isThroughFullList() + "\n";
+		row += icon.isThroughFullList() + ",";
+		
+		row += icon.getOpenLuncherTime() + ",";
+		row += icon.getOpenFullListTime() + "\n";
 		
 		Log.v(TAG, row);
 		result += row;
